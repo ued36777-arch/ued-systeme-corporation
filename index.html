@@ -4,186 +4,103 @@
 <title>U.E.D. SYSTEME & CORPORATION</title>
 
 <style>
-
 body {
     margin:0;
     background:black;
-    overflow:hidden;
     color:white;
-    font-family: "Courier New", monospace;
+    overflow:hidden;
+    font-family:monospace;
 }
-
-
-/* pluie Matrix */
 
 canvas {
     position:fixed;
     top:0;
     left:0;
-    z-index:0;
 }
 
-
-/* contenu */
-
 .container {
-
     position:relative;
     z-index:2;
     height:100vh;
-
     display:flex;
     justify-content:center;
     align-items:center;
-
     text-align:center;
-
 }
 
-
-/* trou noir ASCII */
-
 .blackhole {
-
     color:#777;
     font-size:22px;
     line-height:18px;
-
-    animation:pulse 4s infinite;
-
 }
-
-
-@keyframes pulse {
-
-0% {
-    transform:scale(1);
-}
-
-50% {
-    transform:scale(1.08);
-}
-
-100% {
-    transform:scale(1);
-}
-
-}
-
-
-/* UED */
 
 h1 {
-
     font-size:90px;
-    margin:20px 0;
-
     letter-spacing:20px;
-
-    text-shadow:
-    0 0 10px white,
-    0 0 30px #555;
-
+    margin:20px;
 }
-
 
 h2 {
-
-    font-size:25px;
-    letter-spacing:8px;
     color:#aaa;
-
+    letter-spacing:8px;
 }
-
-
 </style>
 
 </head>
 
-
 <body>
 
-
 <canvas id="matrix"></canvas>
-
-
 
 <div class="container">
 
 <div>
 
-
 <div class="blackhole">
 
-
-              .       .       .
-          .       █████       .
-       .      ███████████      .
-            ████       ████
-           ███    ●      ███
-            ████       ████
-       .      ███████████
-          .       █████
-              .       .
-
+&nbsp;&nbsp;&nbsp;&nbsp;█████<br>
+&nbsp;&nbsp;█████████<br>
+&nbsp;███&nbsp;&nbsp;&nbsp;●&nbsp;&nbsp;&nbsp;███<br>
+&nbsp;&nbsp;█████████<br>
+&nbsp;&nbsp;&nbsp;&nbsp;█████
 
 </div>
-
-
 
 <h1>U.E.D.</h1>
 
 <h2>SYSTEME & CORPORATION</h2>
 
-
 </div>
 
 </div>
-
-
-
 
 
 <script>
 
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
 
-// MATRIX RAIN
-
-
-const canvas=document.getElementById("matrix");
-const ctx=canvas.getContext("2d");
-
-
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
 
-const characters=
-"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
+const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
+const size = 18;
 
-const size=18;
+const columns = canvas.width / size;
 
-const columns=canvas.width/size;
+const drops = [];
 
-
-const drops=[];
-
-
-for(let i=0;i<columns;i++){
-
-drops[i]=Math.random()*canvas.height;
-
+for(let i = 0; i < columns; i++){
+    drops[i] = 0;
 }
 
 
+function draw(){
 
-function matrix(){
-
-
-ctx.fillStyle="rgba(0,0,0,0.08)";
+ctx.fillStyle = "rgba(0,0,0,0.08)";
 ctx.fillRect(0,0,canvas.width,canvas.height);
-
 
 ctx.fillStyle="#555";
 ctx.font=size+"px monospace";
@@ -191,42 +108,24 @@ ctx.font=size+"px monospace";
 
 for(let i=0;i<drops.length;i++){
 
+let text = chars[Math.floor(Math.random()*chars.length)];
 
-let text=
-characters[
-Math.floor(Math.random()*characters.length)
-];
+ctx.fillText(text,i*size,drops[i]*size);
 
 
-ctx.fillText(
-text,
-i*size,
-drops[i]
-);
+drops[i]++;
 
 
+if(drops[i]*size > canvas.height){
+    drops[i]=0;
+}
 
-drops[i]+=size;
-
-
-
-if(drops[i]>canvas.height){
-
-drops[i]=0;
+}
 
 }
 
 
-}
-
-
-}
-
-
-
-setInterval(matrix,45);
-
-
+setInterval(draw,50);
 
 </script>
 
