@@ -1,134 +1,652 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
+
 <head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>U.E.D. SYSTEME & CORPORATION</title>
 
 <style>
-body {
+
+*{
     margin:0;
-    background:black;
-    color:white;
-    overflow:hidden;
-    font-family:monospace;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI", Arial, sans-serif;
 }
 
-canvas {
+body{
+    background:#000;
+    color:white;
+    overflow-x:hidden;
+}
+
+
+/* MATRIX */
+
+#matrix{
     position:fixed;
     top:0;
     left:0;
+    width:100%;
+    height:100%;
+    z-index:-1;
 }
 
-.container {
-    position:relative;
-    z-index:2;
-    height:100vh;
+
+
+/* ECRAN BIENVENUE */
+
+#welcome{
+
+    position:fixed;
+    inset:0;
+
+    background:
+    radial-gradient(circle,#222 0%,#000 55%);
+
     display:flex;
     justify-content:center;
     align-items:center;
     text-align:center;
+
+    z-index:10;
+
+    transition:2s;
+
 }
 
-.blackhole {
-    color:#777;
-    font-size:22px;
-    line-height:18px;
+
+#welcome.hide{
+
+    opacity:0;
+    pointer-events:none;
+
 }
 
-h1 {
-    font-size:90px;
-    letter-spacing:20px;
-    margin:20px;
+
+
+/* LOGO */
+
+.logo{
+
+    animation:show 3s ease;
+
 }
 
-h2 {
-    color:#aaa;
-    letter-spacing:8px;
+
+@keyframes show{
+
+from{
+opacity:0;
+transform:scale(.5);
 }
+
+to{
+opacity:1;
+transform:scale(1);
+}
+
+}
+
+
+
+.blackhole{
+
+width:280px;
+height:280px;
+
+margin:auto;
+
+border-radius:50%;
+
+
+background:
+
+radial-gradient(circle,
+#000 30%,
+#111 45%,
+#555 60%,
+transparent 70%);
+
+
+box-shadow:
+
+0 0 40px #777,
+0 0 100px #333;
+
+
+animation:gravity 5s infinite;
+
+}
+
+
+
+@keyframes gravity{
+
+50%{
+
+transform:scale(1.08) rotate(10deg);
+
+}
+
+}
+
+
+
+.logo h1{
+
+font-size:100px;
+
+letter-spacing:25px;
+
+margin-top:25px;
+
+text-shadow:
+0 0 15px white,
+0 0 40px #777;
+
+}
+
+
+
+.logo h2{
+
+letter-spacing:10px;
+
+color:#aaa;
+
+font-size:25px;
+
+}
+
+
+
+button{
+
+margin-top:50px;
+
+padding:18px 50px;
+
+background:transparent;
+
+border:1px solid white;
+
+color:white;
+
+font-size:18px;
+
+letter-spacing:4px;
+
+cursor:pointer;
+
+transition:.4s;
+
+}
+
+
+
+button:hover{
+
+background:white;
+
+color:black;
+
+}
+
+
+
+/* SITE PRINCIPAL */
+
+
+#main{
+
+display:none;
+
+animation:fade 2s;
+
+}
+
+
+
+@keyframes fade{
+
+from{
+opacity:0;
+}
+
+to{
+opacity:1;
+}
+
+}
+
+
+
+header{
+
+height:100vh;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+text-align:center;
+
+}
+
+
+header h1{
+
+font-size:80px;
+
+letter-spacing:15px;
+
+}
+
+
+
+header p{
+
+font-size:25px;
+
+color:#bbb;
+
+margin-top:30px;
+
+}
+
+
+
+section{
+
+padding:80px 10%;
+
+}
+
+
+
+.title{
+
+text-align:center;
+
+font-size:45px;
+
+letter-spacing:8px;
+
+margin-bottom:50px;
+
+}
+
+
+
+.text{
+
+max-width:900px;
+
+margin:auto;
+
+text-align:center;
+
+font-size:22px;
+
+line-height:1.8;
+
+color:#ccc;
+
+}
+
+
+
+.cards{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+
+gap:30px;
+
+}
+
+
+
+.card{
+
+padding:40px;
+
+background:rgba(255,255,255,.05);
+
+border:1px solid #333;
+
+text-align:center;
+
+transition:.5s;
+
+}
+
+
+
+.card:hover{
+
+transform:translateY(-15px);
+
+border-color:white;
+
+}
+
+
+
+.card h3{
+
+font-size:28px;
+
+margin-bottom:20px;
+
+}
+
+
+
+footer{
+
+padding:30px;
+
+text-align:center;
+
+color:#777;
+
+}
+
+
+
 </style>
 
 </head>
 
+
 <body>
+
 
 <canvas id="matrix"></canvas>
 
-<div class="container">
 
-<div>
 
-<div class="blackhole">
+<!-- BIENVENUE -->
 
-&nbsp;&nbsp;&nbsp;&nbsp;█████<br>
-&nbsp;&nbsp;█████████<br>
-&nbsp;███&nbsp;&nbsp;&nbsp;●&nbsp;&nbsp;&nbsp;███<br>
-&nbsp;&nbsp;█████████<br>
-&nbsp;&nbsp;&nbsp;&nbsp;█████
 
-</div>
+<div id="welcome">
+
+
+<div class="logo">
+
+
+<div class="blackhole"></div>
+
 
 <h1>U.E.D.</h1>
 
 <h2>SYSTEME & CORPORATION</h2>
 
-</div>
+
+<button onclick="enterSystem()">
+
+ENTRER DANS LE SYSTEME
+
+</button>
+
 
 </div>
+
+
+</div>
+
+
+
+
+
+<!-- SITE PRINCIPAL -->
+
+
+<div id="main">
+
+
+<header>
+
+<div>
+
+<h1>U.E.D.</h1>
+
+<p>
+Une passerelle entre chaque besoin et chaque solution.
+</p>
+
+</div>
+
+</header>
+
+
+
+
+
+<section>
+
+
+<div class="title">
+
+NOTRE VISION
+
+</div>
+
+
+<div class="text">
+
+U.E.D. SYSTEME & CORPORATION accompagne les particuliers
+et entreprises dans la recherche de solutions adaptées.
+
+Chaque demande est étudiée afin de trouver les meilleures
+opportunités, partenaires et services selon les objectifs
+et les budgets.
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<section>
+
+
+<div class="title">
+
+DOMAINES
+
+</div>
+
+
+<div class="cards">
+
+
+<div class="card">
+
+<h3>Transport</h3>
+
+<p>
+Logistique privée,
+livraison et mobilité.
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>Automobile</h3>
+
+<p>
+Recherche,
+import/export et accompagnement.
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>Technologie</h3>
+
+<p>
+Informatique,
+solutions numériques.
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>Projets</h3>
+
+<p>
+Toute demande étudiée,
+aucune limite de domaine.
+</p>
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+<footer>
+
+© U.E.D. SYSTEME & CORPORATION
+
+</footer>
+
+
+</div>
+
+
+
 
 
 <script>
 
-const canvas = document.getElementById("matrix");
-const ctx = canvas.getContext("2d");
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+function enterSystem(){
+
+document.getElementById("welcome")
+.classList.add("hide");
 
 
-const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+setTimeout(()=>{
 
-const size = 18;
+document.getElementById("welcome").style.display="none";
 
-const columns = canvas.width / size;
+document.getElementById("main").style.display="block";
 
-const drops = [];
 
-for(let i = 0; i < columns; i++){
-    drops[i] = 0;
+},2000);
+
+
 }
 
 
-function draw(){
 
-ctx.fillStyle = "rgba(0,0,0,0.08)";
+
+
+// MATRIX
+
+
+const canvas=document.getElementById("matrix");
+
+const ctx=canvas.getContext("2d");
+
+
+canvas.width=window.innerWidth;
+
+canvas.height=window.innerHeight;
+
+
+const chars="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+
+const size=18;
+
+const columns=canvas.width/size;
+
+
+const drops=[];
+
+
+for(let i=0;i<columns;i++){
+
+drops[i]=Math.random()*canvas.height;
+
+}
+
+
+
+function matrix(){
+
+
+ctx.fillStyle="rgba(0,0,0,0.08)";
+
 ctx.fillRect(0,0,canvas.width,canvas.height);
 
-ctx.fillStyle="#555";
+
+ctx.fillStyle="#666";
+
 ctx.font=size+"px monospace";
 
 
 for(let i=0;i<drops.length;i++){
 
-let text = chars[Math.floor(Math.random()*chars.length)];
 
-ctx.fillText(text,i*size,drops[i]*size);
-
-
-drops[i]++;
+let text=chars[Math.floor(Math.random()*chars.length)];
 
 
-if(drops[i]*size > canvas.height){
-    drops[i]=0;
+ctx.fillText(text,i*size,drops[i]);
+
+
+drops[i]+=size;
+
+
+
+if(drops[i]>canvas.height){
+
+drops[i]=0;
+
 }
 
-}
 
 }
 
 
-setInterval(draw,50);
+}
+
+
+setInterval(matrix,40);
+
+
 
 </script>
 
 
 </body>
+
 </html>
